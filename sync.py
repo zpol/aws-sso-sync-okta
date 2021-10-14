@@ -21,7 +21,7 @@
 ## Otherwise the script won't be able to find the access credentials for both API's.
 ##
 ## Author: Pol Jane (pjane@edrans.com)
-## v0.1
+## v0.6
 
 
 import requests
@@ -30,8 +30,8 @@ import boto3
 import sys
 
 
-aws_scim_endpoint = 'https://scim.eu-west-1.amazonaws.com/vdl396222e7-7601-488c-b725-c595e30548d8/scim/v2/Users'
-aws_scim_groups_endpoint = 'https://scim.eu-west-1.amazonaws.com/vdl396222e7-7601-488c-b725-c595e30548d8/scim/v2/Groups'
+aws_scim_endpoint = 'YOUR_SCIM_ENDPOINT'
+aws_scim_groups_endpoint = 'YOUR_SCIM_GROUPS_ENDPOINT'
 okta_domain="xxxxxx.okta.com"
 okta_groups=list(sys.argv[1].split(' ')) if len(sys.argv) > 1 else "xxxxxxxxxx"# Source group in Okta
 aws_groups=okta_groups # Destination group in AWS SSO
