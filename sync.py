@@ -17,7 +17,8 @@
 ## to run it carefully by syncing the groups from OKTA to AWSSSO one by one!!
 ## this was you only can screw up one group at time :)
 ##
-## Also be sure to launch this script being authenticatd via CLI against the Root Account!!
+## Since the access credentials are stored in Parameter Store (AWS SSM),be sure to launch this script 
+## being authenticatd via CLI against the Root Account or where you're configuring the AWS SSO and AWS SSM.
 ## Otherwise the script won't be able to find the access credentials for both API's.
 ##
 ## Author: Pol Jane (pjane@edrans.com)
@@ -30,7 +31,7 @@ import boto3
 import sys
 
 
-aws_scim_endpoint = 'YOUR_SCIM_ENDPOINT'
+aws_scim_endpoint = 'YOUR_SCIM_ENDPOINT' 
 aws_scim_groups_endpoint = 'YOUR_SCIM_GROUPS_ENDPOINT'
 okta_domain="xxxxxx.okta.com"
 okta_groups=list(sys.argv[1].split(' ')) if len(sys.argv) > 1 else "xxxxxxxxxx"# Source group in Okta
