@@ -61,7 +61,11 @@ me@crashtestdummy[~]> sync-users.py xx_devops
 >> Group ID: 93671e0715-b65a0f2f-ds7d-402d-a05c-91441697f9dc
 >> User [ xxxxxxxx1@xxxxxxxxx.com ] already exists in group93671e0715-b65a0f2f-ce8b-a05c-a05c-91441687f9dc
 >> User [ xxxxxxxx2@xxxxxxxxx.com ] already exists in group93671e0715-b65a0f2f-ce8b-a05c-a05c-914416973fdc
+>> User [ xxxxxtest@xxxxxxxxx.com ] creating user into AWS SSO .......OK
+>> User [ xxxxtest1@xxxxxxxxx.com ] creating user into AWS SSO .......OK
+>> User [ xxxxtest2@xxxxxxxxx.com ] creating user into AWS SSO .......OK
 ```
+---
 ## TODO/WIP
 
 * Iterate over a list of groups to sync multiple groups
