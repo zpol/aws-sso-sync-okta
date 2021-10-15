@@ -22,7 +22,7 @@
 ## Otherwise the script won't be able to find the access credentials for both API's.
 ##
 ## Author: Pol Jane (pjane@edrans.com)
-## v0.1
+## v0.7
 
 
 import requests
