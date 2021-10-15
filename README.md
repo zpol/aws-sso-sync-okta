@@ -62,9 +62,13 @@ me@crashtestdummy[~]> sync-users.py xx_devops
 >> User [ xxxxxxxx1@xxxxxxxxx.com ] already exists in group93671e0715-b65a0f2f-ce8b-a05c-a05c-91441687f9dc
 >> User [ xxxxxxxx2@xxxxxxxxx.com ] already exists in group93671e0715-b65a0f2f-ce8b-a05c-a05c-914416973fdc
 ```
+## TODO/WIP
+
+* Iterate over a list of groups to sync multiple groups
+* Get the list of groups from SSM (Parameter Store) instead of passing an argument to the script
 
 ## Troubleshooting
-WIP
+(WIP)
 
 WARNING: Since this software is not tested enough I would strongly suggest
 to run it carefully by syncing the groups from OKTA to AWS SSO one by one!!
