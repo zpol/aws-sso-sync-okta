@@ -21,8 +21,7 @@
 ## Also be sure to launch this script being authenticatd via CLI against the Root Account!!
 ## Otherwise the script won't be able to find the access credentials for both API's.
 ##
-## Author: Pol Jane (pjane@edrans.com)
-## v0.7
+## v0.8
 
 
 import requests
