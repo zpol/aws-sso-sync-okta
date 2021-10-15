@@ -1,9 +1,10 @@
-#!/usr/local/bin/python
+#!/usr/bin/python
 
 ## This script is intended to syncronize all or some selected users from Okta to AWS SSO
 ## depending on a query filtering by group name.
 ##
 ## Workflow:
+##  0. Get okts_groups from SSM (Parameter Store) convertis into a list and iterates over it.
 ##  1. It asks to OKTA API for groups matching "okta_groups" variable (okta may show more than one match since the search is regexp based )
 ##  2. Get all Group_Id's for the matching groups
 ##  3. Then for each group found asks for all the users inside those groups
@@ -17,37 +18,41 @@
 ## to run it carefully by syncing the groups from OKTA to AWSSSO one by one!!
 ## this was you only can screw up one group at time :)
 ##
-## Since the access credentials are stored in Parameter Store (AWS SSM),be sure to launch this script 
-## being authenticatd via CLI against the Root Account or where you're configuring the AWS SSO and AWS SSM.
+## Also be sure to launch this script being authenticatd via CLI against the Root Account!!
 ## Otherwise the script won't be able to find the access credentials for both API's.
 ##
 ## Author: Pol Jane (pjane@edrans.com)
-## v0.6
+## v0.1
 
 
 import requests
 import json
 import boto3
 import sys
+import time
 
 
-aws_scim_endpoint = 'YOUR_SCIM_ENDPOINT' 
-aws_scim_groups_endpoint = 'YOUR_SCIM_GROUPS_ENDPOINT'
+aws_scim_endpoint = 'https://scim.eu-west-1.amazonaws.com/xxxxxxxxx-xxxx-xxxx-xxxxxx/scim/v2/Users'
+aws_scim_groups_endpoint = 'https://scim.eu-west-1.amazonaws.com/xxxxxxxxx-xxxxx-xxxx-xxxxx/scim/v2/Groups'
 okta_domain="xxxxxx.okta.com"
-okta_groups=list(sys.argv[1].split(' ')) if len(sys.argv) > 1 else "xxxxxxxxxx"# Source group in Okta
-aws_groups=okta_groups # Destination group in AWS SSO
+#okta_groups=list(sys.argv[1].split(' ')) if len(sys.argv) > 1 else "xxxxxxxxxx"# Source group in Okta
 pagination=100
 
 
-# def get_okta_groups():
-#     ssm = boto3.client('ssm',region_name='eu-west-1')
-#     aws_parameter = ssm.get_parameter(Name='groups_to_sync',WithDecryption=True)
-#     okta_groups = aws_parameter['Parameter']['Value']
-#     print(okta_groups)
+def get_okta_groups():
+     ssm = boto3.client('ssm',region_name='eu-west-1') # put the proper AWS region if needed
+     aws_parameter = ssm.get_parameter(Name='groups_to_sync',WithDecryption=True)
+     okta_groups_raw = aws_parameter['Parameter']['Value']
+     global okta_groups
+     global aws_groups
+     okta_groups = okta_groups_raw.split(",") # source group in Okta
+     aws_groups=okta_groups # Destination group in AWS SSO
+     print("Getting groups list from SSM (Parameter Store): " + okta_groups_raw)
+     return okta_groups
 
 
 def get_api_tokens():
-    ssm = boto3.client('ssm',region_name='eu-west-1')
+    ssm = boto3.client('ssm',region_name='eu-west-1') # put the proper AWS region if needed
 
     aws_parameter = ssm.get_parameter(Name='amz_sso_api_token', WithDecryption=True)
     aws_sso_token = aws_parameter['Parameter']['Value']
@@ -73,7 +78,7 @@ def get_api_tokens():
 
 
 get_api_tokens()
-# get_okta_groups()
+get_okta_groups()
 
 
 
@@ -83,13 +88,13 @@ def okta_get_group_id(group_name):
 
    print(">> Retrieving Group ID's from Okta.........")
    print(group_name)
-   for group in group_name:
-       okta_url = "https://" + okta_domain + "/api/v1/groups?q=" + group + "&limit=" + str(pagination)
-       group_ids = requests.get(okta_url, params="",headers=okta_headers)
-       id=group_ids.json()
-       for i in id:
-            print("  " + i['id'] + " - [ " + i['profile']['name'] + " ]")
-            list_group_ids.append(i["id"])
+   okta_url = "https://xxxxxxxx.okta.com/api/v1/groups?q=" + group_name + "&limit=" + str(pagination)
+   group_ids = requests.get(okta_url, params="",headers=okta_headers)
+   print(group_ids.url)
+   id=group_ids.json()
+   for i in id:
+       print("  " + i['id'] + " - [ " + i['profile']['name'] + " ]")
+       list_group_ids.append(i["id"])
    return list_group_ids
 
 
@@ -100,7 +105,7 @@ def read_users_from_okta_groups(list_group_ids):
 
     print(">> Getting users from retrieved group ID's .........")
     for group_id in list_group_ids:
-        okta_url = "https://" + okta_domain + "/api/v1/groups/" + group_id + "/users?limit=" + str(pagination)
+        okta_url = "https://xxxxxxxxx.okta.com/api/v1/groups/" + group_id + "/users?limit=" + str(pagination)
         get_users = requests.get(okta_url, params="",headers=okta_headers)
 
         user_login = get_users.json()
@@ -208,16 +213,17 @@ def create_aws_group(group_name):
 
 def search_awssso_group(aws_group_name):
     group_id = ""
-    print(">> Searching Groups matching: [ " + aws_group_name[0] + " ]")
-    x = requests.get(aws_scim_groups_endpoint, params={ "filter": 'displayName eq "' + aws_group_name[0] + '"' }, headers=scim_headers)
+    print(">> Searching Groups matching: [ " + aws_group_name + " ]")
+    x = requests.get(aws_scim_groups_endpoint, params={ "filter": 'displayName eq "' + aws_group_name + '"' }, headers=scim_headers)
     gid = x.json()
+    print(gid)
     print(">> Results found: "  + str(gid['totalResults']) )
     total_res = gid['totalResults']
     if total_res == 0:
-        print(">> Can't find group name: " + aws_group_name[0] + " in AWS SSO, creating group,... ")
+        print(">> Can't find group name: " + aws_group_name + " in AWS SSO, creating group,... ")
         # Comment the line below to DRY RUN mode
-        create_aws_group(aws_group_name[0])
-        group_id = get_aws_group_id(aws_group_name[0])
+        create_aws_group(aws_group_name)
+        group_id = get_aws_group_id(aws_group_name)
         return group_id
     else:
         group_id = gid['Resources'][0]['id']
@@ -274,6 +280,11 @@ def patch_aws_sso_group(aws_group_id, users):
 print(">> Syncing users from Okta to AWS SSO")
 print("==========================================")
 
-list_user_ids = read_users_from_okta_groups(okta_get_group_id(okta_groups))
-check_if_aws_sso_user_exists(list_user_ids)
-patch_aws_sso_group(search_awssso_group(aws_groups),list_user_ids)
+for group in okta_groups:
+
+    print("Migrating group: " + group)
+
+    list_user_ids = read_users_from_okta_groups(okta_get_group_id(group))
+    check_if_aws_sso_user_exists(list_user_ids)
+    print(aws_groups)
+    patch_aws_sso_group(search_awssso_group(group),list_user_ids)
