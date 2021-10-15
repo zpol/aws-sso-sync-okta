@@ -6,7 +6,12 @@ A small script to migrate or synchronize users &amp; groups from Okta to AWS SSO
 
 | Changelog  | Version  | 
 |---|---|
+| Remove hardcoded values on variables and enable arguments as group_name| 0.5  |
 | Fixed search filtering in okta  + enable dry run mode| 0.6  |
+| Enable iterating over a list obtained via SSM Parameter Store)| 0.7 |
+| Fix error iterating on check_aws_groups| 0.8 |
+
+### Current version: `0.8`
 
 This script is intended to syncronize all or some selected users from Okta to AWS SSO
 based on a query filtering by group name on both APIs.
