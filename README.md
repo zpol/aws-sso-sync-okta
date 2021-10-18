@@ -40,7 +40,7 @@ based on a query filtering by group name on both APIs.
 6. Save and quit
 
 ## Usage
-`sync-users.py <group_name>`
+`python ./sync-users.py`
 
 ## Considerations
 * Okta API when searching for groups (https://developer.okta.com/docs/reference/api/groups/) as they mention in the documentation, currently performs a startsWith match but it should be considered an implementation detail and may change without notice in the future. 
