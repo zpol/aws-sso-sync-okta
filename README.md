@@ -1,6 +1,8 @@
 # aws-sso-sync-okta
 A small script to migrate or synchronize users &amp; groups from Okta to AWS SSO
 
+Note that this is a feature already included in some advanced/premium subscription plans but not in basic ones. If for some reason you have a basic plan but you want to sync users between Ookta and AWS SSO you can use this tool.
+
 [![Foo](https://www.androidfreeware.net/img2/com-okta-android-mobile-oktamobile.jpg)](https://okta.com/) ![Foo](https://www.iconsdb.com/icons/preview/green/arrow-32-xxl.png) [![Foo](https://awsvideocatalog.com/images/aws/png/PNG%20Light/Security,%20Identity,%20&%20Compliance/AWS-Single-Sign-On.png)](https://aws.com)
 
 
@@ -72,14 +74,23 @@ me@crashtestdummy[~]> sync-users.py xx_devops
 ```
 ---
 
+## TODO
+
+* Create helm chart
+* Create deploy method for Serverless
+* Create AMI
+
 ## Troubleshooting
-(WIP)
+
+No known issues right now
+
+Tested on Linux & Mac OSX with python 3.9
 
 WARNING: Since this software is not tested enough I would strongly suggest
-to run it carefully by syncing the groups from OKTA to AWS SSO one by one!!
+to run it carefully by syncing the groups from OKTA to AWS SSO one by one to test first!!
 this was you only can screw up one group at time :)
 
-Since the access credentials are stored in Parameter Store (AWS SSM),be sure to launch this script 
-being authenticatd via CLI against the Root Account or where you're configuring the AWS SSO and AWS SSM.
+Since the access credentials are stored in Parameter Store (AWS SSM) on the same account where AWS SSO is,
+be sure to launch this script being authenticatd via CLI against the Root Account or where you're configuring the AWS SSO and AWS SSM.
 Otherwise the script won't be able to find the access credentials for both API's.
 
