@@ -1,7 +1,9 @@
 # aws-sso-sync-okta
 A small script to migrate or synchronize users &amp; groups from Okta to AWS SSO
 
-Note that this is a feature already included in some advanced/premium subscription plans but not in basic ones. If for some reason you have a basic plan but you want to sync users between Ookta and AWS SSO you can use this tool.
+Note that this is a feature already included in some advanced/premium Okta subscription plans but not in the basic ones. 
+If for some reason you have a basic plan but you want to sync users between Okta and AWS SSO you can use this tool.
+
 
 [![Foo](https://www.androidfreeware.net/img2/com-okta-android-mobile-oktamobile.jpg)](https://okta.com/) ![Foo](https://www.iconsdb.com/icons/preview/green/arrow-32-xxl.png) [![Foo](https://awsvideocatalog.com/images/aws/png/PNG%20Light/Security,%20Identity,%20&%20Compliance/AWS-Single-Sign-On.png)](https://aws.com)
 
