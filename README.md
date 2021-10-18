@@ -71,10 +71,6 @@ me@crashtestdummy[~]> sync-users.py xx_devops
 >> User [ xxxxtest2@xxxxxxxxx.com ] creating user into AWS SSO .......OK
 ```
 ---
-## TODO/WIP
-
-* Iterate over a list of groups to sync multiple groups
-* Get the list of groups from SSM (Parameter Store) instead of passing an argument to the script
 
 ## Troubleshooting
 (WIP)
