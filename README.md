@@ -91,7 +91,7 @@ Tested on Linux & Mac OSX with python 3.9
 
 WARNING: Since this software is not tested enough I would strongly suggest
 to run it carefully by syncing the groups from OKTA to AWS SSO one by one to test first!!
-this was you only can screw up one group at time :)
+this way you only can screw up one group at time :)
 
 Since the access credentials are stored in Parameter Store (AWS SSM) on the same account where AWS SSO is,
 be sure to launch this script being authenticatd via CLI against the Root Account or where you're configuring the AWS SSO and AWS SSM.
