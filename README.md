@@ -14,8 +14,9 @@ If for some reason you have a basic plan but you want to sync users between Okta
 | Fixed search filtering in okta  + enable dry run mode| 0.6  |
 | Enable iterating over a list obtained via SSM Parameter Store)| 0.7 |
 | Fix error iterating on check_aws_groups| 0.8 |
+| Improved logs + timestamps| 0.9 |
 
-### Current version: `0.8`
+### Current version: `0.9`
 
 This script is intended to syncronize all or some selected users from Okta to AWS SSO
 based on a query filtering by group name on both APIs.
