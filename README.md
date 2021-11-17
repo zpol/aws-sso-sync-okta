@@ -54,7 +54,7 @@ To avoid more than one result I strongly sugget to use prefixes as a naming conv
 ## Demo: 
 
 ```
-me@crashtestdummy[~]> sync-users.py xx_devops
+me@crashtestdummy[~]> sync.py
 
 >> Syncing users from Okta to AWS SSO
 ==========================================
@@ -75,6 +75,10 @@ me@crashtestdummy[~]> sync-users.py xx_devops
 >> User [ xxxxtest1@xxxxxxxxx.com ] creating user into AWS SSO .......OK
 >> User [ xxxxtest2@xxxxxxxxx.com ] creating user into AWS SSO .......OK
 ```
+
+It can be also triggered from a cronjob: 
+`14 * * * *   /usr/local/bin/sync.py`
+
 ---
 
 ## TODO
